@@ -70,7 +70,9 @@ namespace CognitivePipeline.Functions.Functions
                 var fileData = provider.Contents[1];
                 var fileBytes = await fileData.ReadAsByteArrayAsync();
 
-                await filesStorageRepo.CreateFileAsync(cognitiveFile.FileName, fileBytes);
+                var url = await filesStorageRepo.CreateFileAsync(cognitiveFile.FileName, fileBytes);
+
+                cognitiveFile.FileUrl = url;
 
                 newReqsQueue.Add(JsonConvert.SerializeObject(cognitiveFile));
 

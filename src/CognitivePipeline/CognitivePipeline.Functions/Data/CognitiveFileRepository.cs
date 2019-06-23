@@ -17,6 +17,4 @@ namespace CognitivePipeline.Functions.Data
         public override string GenerateId(CognitiveFile entity) => $"{entity.OwnerId}:{Guid.NewGuid()}";
         public override PartitionKey ResolvePartitionKey(string entityId) => new PartitionKey(entityId.Split(':')[0]);
     }
-
-}
 }
