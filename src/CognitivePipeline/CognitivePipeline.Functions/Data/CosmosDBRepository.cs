@@ -59,6 +59,11 @@ namespace CognitivePipeline.Functions.Data
                 {
                     throw new InvalidOperationException("Document already exists");
                 }
+                else if(e.StatusCode == HttpStatusCode.NotFound)
+                {
+                    //This happen when you try to access the db container while it is not provisioned yet
+                    await _cosmosDbClientFactory.EnsureDbSetupAsync();
+                }
 
                 throw;
             }

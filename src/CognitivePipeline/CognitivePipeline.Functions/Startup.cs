@@ -31,8 +31,8 @@ namespace CognitivePipeline.Functions
             });
 
             //Register our cosmos db repository for Cognitive Files :)
-            builder.Services.AddScoped<ICognitiveFilesRepository, CognitiveFileRepository>();
-            builder.Services.AddScoped<IUserAccountRepository, UserAccountRepository>();
+            builder.Services.AddSingleton<ICognitiveFilesRepository, CognitiveFileRepository>();
+            builder.Services.AddSingleton<IUserAccountRepository, UserAccountRepository>();
         }
     }
 }

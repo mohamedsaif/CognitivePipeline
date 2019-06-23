@@ -37,8 +37,34 @@ namespace CognitivePipeline.Functions.Data
 
             foreach (var collectionName in _collectionNames)
             {
-                await _documentClient.ReadDocumentCollectionAsync(
-                    UriFactory.CreateDocumentCollectionUri(_databaseName, collectionName));
+                try
+                {
+                    await _documentClient.ReadDocumentCollectionAsync(
+                        UriFactory.CreateDocumentCollectionUri(_databaseName, collectionName));
+                }
+                catch(DocumentClientException e)
+                {
+                    if (e.StatusCode == System.Net.HttpStatusCode.NotFound)
+                    {
+                        var docCollection = new DocumentCollection { Id = collectionName };
+                        string partionKey = "";
+                        if (collectionName == AppConstants.DbCognitiveFilesContainer)
+                            partionKey = "/ownerId";
+                        else if (collectionName == AppConstants.DbUserAccountsContainer)
+                            partionKey = "/accountId";
+                        if (string.IsNullOrEmpty(partionKey))
+                            docCollection.PartitionKey.Paths.Add($"/{partionKey}");
+
+                        await _documentClient.CreateDocumentCollectionAsync(
+                            UriFactory.CreateDatabaseUri(_databaseName),
+                            docCollection,
+                            new RequestOptions { OfferThroughput = 400});
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
             }
         }
     }

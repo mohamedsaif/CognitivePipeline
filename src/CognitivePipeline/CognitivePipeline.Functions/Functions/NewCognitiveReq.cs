@@ -74,6 +74,8 @@ namespace CognitivePipeline.Functions.Functions
 
                 cognitiveFile.FileUrl = url;
 
+                await cognitiveFilesRepo.AddAsync(cognitiveFile);
+
                 newReqsQueue.Add(JsonConvert.SerializeObject(cognitiveFile));
 
                 return new CreatedResult(cognitiveFile.FileName, null);
