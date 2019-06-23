@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.Net.Http;
+using CognitivePipeline.Functions.Models;
 
 namespace CognitivePipeline.Functions.Functions
 {
@@ -16,9 +17,18 @@ namespace CognitivePipeline.Functions.Functions
     /// </summary>
     public static class NewCognitiveReq
     {
+        /// <summary>
+        /// Initiate new cognitive pipeline processing for a document
+        /// </summary>
+        /// <param name="req"></param>
+        /// <param name="log"></param>
+        /// <returns></returns>
         [FunctionName("NewCognitiveReq")]
         public static async Task<IActionResult> Run(
+            //Trigger
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequestMessage req,
+
+            //Logger
             ILogger log)
         {
             log.LogInformation("******* NewCognitiveReq starting");
@@ -28,29 +38,21 @@ namespace CognitivePipeline.Functions.Functions
                 var provider = new MultipartMemoryStreamProvider();
                 await req.Content.ReadAsMultipartAsync(provider);
 
-                //Get training file attributes (name and regions)
-                var trainingFileInfo = provider.Contents[0];
-                var trainingFileJson = await trainingFileInfo.ReadAsStringAsync();
-                var trainingFileDTO = JsonConvert.DeserializeObject<DTOTrainingFile>(trainingFileJson);
+                //Get cognitive file attributes
+                var fileInfo = provider.Contents[0];
+                var fileInfoJson = await fileInfo.ReadAsStringAsync();
+                var cognitiveFile = JsonConvert.DeserializeObject<CognitiveFile>(fileInfoJson);
 
-                //Get training file bytes
-                var trainingFileData = provider.Contents[1];
-                var trainingFileBytes = await trainingFileData.ReadAsByteArrayAsync();
+                //Get file bytes
+                var fileData = provider.Contents[1];
+                var fileBytes = await fileData.ReadAsByteArrayAsync();
 
-                var workspaceManager = await ODWorkspaceManagerHelper.SetWorkspaceManager(trainingFileDTO.OwnerId, false);
-
-                var workspace = await workspaceManager.GetWorkspaceAsync(trainingFileDTO.OwnerId, true);
-
-                var newFileName = workspaceManager.AddTrainingFile(trainingFileDTO.FileName, trainingFileBytes, Mapper.Map<List<ObjectRegion>>(trainingFileDTO.Regions));
-
-                await workspaceManager.ValidateAndSaveWorkspace();
-
-                return new CreatedResult(newFileName, null);
+                return new CreatedResult("REPLACEWITHID", null);
             }
             catch (Exception ex)
             {
-                log.LogError($"FAILED: {ex.Message}");
-                return new BadRequestObjectResult($"Addition of the file failed");
+                log.LogError($"####### FAILED: {ex.Message}");
+                return new BadRequestObjectResult($"Request submission failed");
             }
         }
     }
