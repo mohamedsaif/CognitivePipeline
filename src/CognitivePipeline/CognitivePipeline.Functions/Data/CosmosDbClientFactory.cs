@@ -33,7 +33,22 @@ namespace CognitivePipeline.Functions.Data
 
         public async Task EnsureDbSetupAsync()
         {
-            await _documentClient.ReadDatabaseAsync(UriFactory.CreateDatabaseUri(_databaseName));
+            try
+            {
+                await _documentClient.ReadDatabaseAsync(UriFactory.CreateDatabaseUri(_databaseName));
+            }
+            catch(DocumentClientException e)
+            {
+                //Database do not exists! Create it
+                if (e.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    await _documentClient.CreateDatabaseAsync(new Database { Id = _databaseName });
+                }
+                else
+                {
+                    throw;
+                }
+            }
 
             foreach (var collectionName in _collectionNames)
             {
@@ -48,10 +63,14 @@ namespace CognitivePipeline.Functions.Data
                     {
                         var docCollection = new DocumentCollection { Id = collectionName };
                         string partionKey = "";
+
                         if (collectionName == AppConstants.DbCognitiveFilesContainer)
                             partionKey = "/ownerId";
                         else if (collectionName == AppConstants.DbUserAccountsContainer)
                             partionKey = "/accountId";
+                        else
+                            partionKey = "/id";
+
                         if (string.IsNullOrEmpty(partionKey))
                             docCollection.PartitionKey.Paths.Add($"/{partionKey}");
 

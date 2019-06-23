@@ -59,10 +59,15 @@ namespace CognitivePipeline.Functions.Data
                 {
                     throw new InvalidOperationException("Document already exists");
                 }
-                else if(e.StatusCode == HttpStatusCode.NotFound)
+                else if (e.StatusCode == HttpStatusCode.NotFound)
                 {
                     //This happen when you try to access the db container while it is not provisioned yet
                     await _cosmosDbClientFactory.EnsureDbSetupAsync();
+
+                    //Collections are created, Trying again :)
+                    //this is supper dangerous. I should use Polly
+                    return await AddAsync(entity);
+
                 }
 
                 throw;
