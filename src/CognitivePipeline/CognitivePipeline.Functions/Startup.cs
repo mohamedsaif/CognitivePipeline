@@ -16,17 +16,17 @@ namespace CognitivePipeline.Functions
     {
         public override void Configure(IFunctionsHostBuilder builder)
         {
+            var endpoint = GlobalSettings.GetKeyValue("cosmosDbEndpoint");
+            var key = GlobalSettings.GetKeyValue("cosmosDbKey");
+            var client = new DocumentClient(new Uri(endpoint), key, new ConnectionPolicy { EnableEndpointDiscovery = false });
             builder.Services.AddSingleton<ICosmosDbClientFactory>((s) =>
             {
-                var endpoint = GlobalSettings.GetKeyValue("cosmosDbEndpoint");
-                var key = GlobalSettings.GetKeyValue("cosmosDbKey");
-                var client = new DocumentClient(new Uri(endpoint), key, new ConnectionPolicy { EnableEndpointDiscovery = false });
                 return new CosmosDbClientFactory(AppConstants.DbName, new List<string> { AppConstants.DbCognitiveFilesContainer, AppConstants.DbUserAccountsContainer }, client);
             });
 
+            var storageConnection = GlobalSettings.GetKeyValue("cognitivePipelineStorageConnection");
             builder.Services.AddSingleton<IStorageRepository>((s) =>
             {
-                var storageConnection = GlobalSettings.GetKeyValue("cognitivePipelineStorageConnection");
                 return new AzureBlobStorageRepository(storageConnection, AppConstants.StorageContainerName);
             });
 

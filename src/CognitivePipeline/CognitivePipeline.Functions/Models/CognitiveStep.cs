@@ -12,9 +12,6 @@ namespace CognitivePipeline.Functions.Models
     /// </summary>
     public class CognitiveStep
     {
-        [JsonProperty("title")]
-        public string Title { get; set; }
-
         [JsonProperty("cognitiveServiceType")]
         public CognitiveService ServiceType { get; set; }
 

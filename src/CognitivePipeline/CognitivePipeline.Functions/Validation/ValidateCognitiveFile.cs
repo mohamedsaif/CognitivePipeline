@@ -21,16 +21,29 @@ namespace CognitivePipeline.Functions.Validation
             var result = new CognitiveFile
             {
                 Id = newId,
-                CognitivePipelineActions = Mapper.Map<List<CognitiveStep>>(file.CognitivePipelineActions),
                 IsProcessed = false,
                 CreatedAt = DateTime.UtcNow,
-                FileName = $"{newId}.{Path.GetExtension(file.FileName)}",
+                FileName = $"{newId}{Path.GetExtension(file.FileName)}",
                 IsDeleted = false,
                 MediaType = FileMediaType.Image,
                 Origin = file.Origin,
                 OwnerId = file.OwnerId,
                 Status = "Processing"
             };
+
+            foreach(var step in file.CognitivePipelineActions)
+            {
+                result.CognitivePipelineActions.Add(new CognitiveStep
+                {
+                    ServiceType = step.ServiceType,
+                    Status = "Processing",
+                    Confidence = 0,
+                    IsSuccessful = false,
+                });
+            }
+
+            //TODO: Add mapper configuration for successful automated mapping between the DTO and business objects
+            //result.CognitivePipelineActions = Mapper.Map<List<CognitiveStep>>(file.CognitivePipelineActions);
 
             return result;
         }

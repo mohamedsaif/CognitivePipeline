@@ -11,7 +11,8 @@ namespace CognitivePipeline.Functions
     /// </summary>
     public static class AppConstants
     {
-        public const string StorageContainerName = "CognitiveFiles";
+        //Remember always that storage containers allows only lower case letters
+        public const string StorageContainerName = "cognitivefiles";
         public const string DbName = "CognitiveFilesDb";
         public const string DbCognitiveFilesContainer = "CognitiveFiles";
         public const string DbUserAccountsContainer = "UserAccounts";
