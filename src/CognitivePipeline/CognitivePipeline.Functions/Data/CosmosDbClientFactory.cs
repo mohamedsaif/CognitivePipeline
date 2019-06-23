@@ -33,11 +33,17 @@ namespace CognitivePipeline.Functions.Data
 
         public async Task EnsureDbSetupAsync()
         {
+            await CreateDatabaseIfNotExists();
+            await CreateColltionsIfNotExists();
+        }
+
+        private async Task CreateDatabaseIfNotExists()
+        {
             try
             {
                 await _documentClient.ReadDatabaseAsync(UriFactory.CreateDatabaseUri(_databaseName));
             }
-            catch(DocumentClientException e)
+            catch (DocumentClientException e)
             {
                 //Database do not exists! Create it
                 if (e.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -49,7 +55,10 @@ namespace CognitivePipeline.Functions.Data
                     throw;
                 }
             }
+        }
 
+        private async Task CreateColltionsIfNotExists()
+        {
             foreach (var collectionName in _collectionNames)
             {
                 try
@@ -57,7 +66,7 @@ namespace CognitivePipeline.Functions.Data
                     await _documentClient.ReadDocumentCollectionAsync(
                         UriFactory.CreateDocumentCollectionUri(_databaseName, collectionName));
                 }
-                catch(DocumentClientException e)
+                catch (DocumentClientException e)
                 {
                     if (e.StatusCode == System.Net.HttpStatusCode.NotFound)
                     {
@@ -77,7 +86,7 @@ namespace CognitivePipeline.Functions.Data
                         await _documentClient.CreateDocumentCollectionAsync(
                             UriFactory.CreateDatabaseUri(_databaseName),
                             docCollection,
-                            new RequestOptions { OfferThroughput = 400});
+                            new RequestOptions { OfferThroughput = 400 });
                     }
                     else
                     {
