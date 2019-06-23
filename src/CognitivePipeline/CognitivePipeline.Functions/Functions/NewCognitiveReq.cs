@@ -10,6 +10,8 @@ using Newtonsoft.Json;
 using System.Net.Http;
 using CognitivePipeline.Functions.Models;
 using CognitivePipeline.Functions.Abstractions;
+using CognitivePipeline.Functions.Models.DTO;
+using CognitivePipeline.Functions.Validation;
 
 namespace CognitivePipeline.Functions.Functions
 {
@@ -18,15 +20,19 @@ namespace CognitivePipeline.Functions.Functions
     /// </summary>
     public class NewCognitiveReq
     {
-        private ICognitiveFilesRepository cognitiveFilesRepo;
+        private readonly ICognitiveFilesRepository cognitiveFilesRepo;
+        private readonly IUserAccountRepository userAccountsRepo;
+        private readonly IStorageRepository filesStorageRepo;
 
         /// <summary>
         /// Leveraging the new Azure Functions Dependency Injection by sending common services in the constructor
         /// </summary>
         /// <param name="filesRepo">Cosmos Db repository for Cognitive Files</param>
-        public NewCognitiveReq(ICognitiveFilesRepository filesRepo)
+        public NewCognitiveReq(ICognitiveFilesRepository filesRepo, IUserAccountRepository usersRepo, IStorageRepository storageRepo)
         {
             cognitiveFilesRepo = filesRepo;
+            userAccountsRepo = usersRepo;
+            filesStorageRepo = storageRepo;
         }
 
         /// <summary>
@@ -36,9 +42,12 @@ namespace CognitivePipeline.Functions.Functions
         /// <param name="log"></param>
         /// <returns></returns>
         [FunctionName("NewCognitiveReq")]
-        public static async Task<IActionResult> Run(
+        public async Task<IActionResult> Run(
             //Trigger
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequestMessage req,
+
+            //Output
+            [Queue("newreq", Connection = "cognitivePipelineStorageConnection")]ICollector<string> newReqsQueue,
 
             //Logger
             ILogger log)
@@ -53,13 +62,19 @@ namespace CognitivePipeline.Functions.Functions
                 //Get cognitive file attributes
                 var fileInfo = provider.Contents[0];
                 var fileInfoJson = await fileInfo.ReadAsStringAsync();
-                var cognitiveFile = JsonConvert.DeserializeObject<CognitiveFile>(fileInfoJson);
+                var cognitiveFileDTO = JsonConvert.DeserializeObject<CognitiveFileDTO>(fileInfoJson);
+
+                var cognitiveFile = ValidateCognitiveFile.ValidateForSubmission(cognitiveFileDTO, userAccountsRepo);
 
                 //Get file bytes
                 var fileData = provider.Contents[1];
                 var fileBytes = await fileData.ReadAsByteArrayAsync();
 
-                return new CreatedResult("REPLACEWITHID", null);
+                await filesStorageRepo.CreateFileAsync(cognitiveFile.FileName, fileBytes);
+
+                newReqsQueue.Add(JsonConvert.SerializeObject(cognitiveFile));
+
+                return new CreatedResult(cognitiveFile.FileName, null);
             }
             catch (Exception ex)
             {

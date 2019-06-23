@@ -16,20 +16,24 @@ namespace CognitivePipeline.Functions
     {
         public override void Configure(IFunctionsHostBuilder builder)
         {
-            //builder.Services.AddHttpClient();
             builder.Services.AddSingleton<ICosmosDbClientFactory>((s) =>
             {
-                //return new CosmosClient(Environment.GetEnvironmentVariable("COSMOSDB_CONNECTIONSTRING"));
                 var endpoint = GlobalSettings.GetKeyValue("cosmosDbEndpoint");
                 var key = GlobalSettings.GetKeyValue("cosmosDbKey");
                 var client = new DocumentClient(new Uri(endpoint), key, new ConnectionPolicy { EnableEndpointDiscovery = false });
                 return new CosmosDbClientFactory(AppConstants.DbName, new List<string> { AppConstants.DbCognitiveFilesContainer, AppConstants.DbUserAccountsContainer }, client);
             });
-            //builder.Services.AddSingleton<ILoggerProvider, MyLoggerProvider>();
+
+            builder.Services.AddSingleton<IStorageRepository>((s) =>
+            {
+                var storageConnection = GlobalSettings.GetKeyValue("cognitivePipelineStorageConnection");
+                return new AzureBlobStorageRepository(storageConnection, AppConstants.StorageContainerName);
+            });
 
             //Register our cosmos db repository for Cognitive Files :)
             builder.Services.AddScoped<ICognitiveFilesRepository, CognitiveFileRepository>();
             builder.Services.AddScoped<IUserAccountRepository, UserAccountRepository>();
+            builder.Services.AddScoped<IStorageRepository, AzureBlobStorageRepository>();
         }
     }
 }
