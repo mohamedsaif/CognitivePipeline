@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.29009.5
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CognitivePipeline.Functions", "CognitivePipeline.Functions\CognitivePipeline.Functions.csproj", "{765BD0E4-745C-4F68-A037-ECCABA529196}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CognitivePipeline.Functions.UnitTests", "CognitivePipeline.Functions.UnitTests\CognitivePipeline.Functions.UnitTests.csproj", "{573E616D-5A16-48DD-B625-D43FF91AE9CC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{765BD0E4-745C-4F68-A037-ECCABA529196}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{765BD0E4-745C-4F68-A037-ECCABA529196}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{765BD0E4-745C-4F68-A037-ECCABA529196}.Release|Any CPU.Build.0 = Release|Any CPU
+		{573E616D-5A16-48DD-B625-D43FF91AE9CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{573E616D-5A16-48DD-B625-D43FF91AE9CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{573E616D-5A16-48DD-B625-D43FF91AE9CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{573E616D-5A16-48DD-B625-D43FF91AE9CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

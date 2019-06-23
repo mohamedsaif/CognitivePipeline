@@ -19,7 +19,7 @@ namespace CognitivePipeline.Functions.Models.DTO
         public FileMediaType MediaType { get; set; }
 
         [JsonProperty("cognitivePipelineActions")]
-        public List<CognitiveStep> CognitivePipelineActions { get; set; } = new List<CognitiveStep>();
+        public List<CognitiveStepDTO> CognitivePipelineActions { get; set; } = new List<CognitiveStepDTO>();
 
         [JsonProperty("origin")]
         public string Origin { get; set; }

@@ -1,4 +1,5 @@
-﻿using CognitivePipeline.Functions.Abstractions;
+﻿using AutoMapper;
+using CognitivePipeline.Functions.Abstractions;
 using CognitivePipeline.Functions.Models;
 using CognitivePipeline.Functions.Models.DTO;
 using System;
@@ -20,7 +21,7 @@ namespace CognitivePipeline.Functions.Validation
             var result = new CognitiveFile
             {
                 Id = newId,
-                CognitivePipelineActions = file.CognitivePipelineActions,
+                CognitivePipelineActions = Mapper.Map<List<CognitiveStep>>(file.CognitivePipelineActions),
                 IsProcessed = false,
                 CreatedAt = DateTime.UtcNow,
                 FileName = $"{newId}.{Path.GetExtension(file.FileName)}",
