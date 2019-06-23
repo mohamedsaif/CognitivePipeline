@@ -12,7 +12,8 @@ namespace CognitivePipeline.Functions
     public static class AppConstants
     {
         public const string StorageContainerName = "CognitiveFiles";
-        public const string DBName = "CognitiveFilesDb";
-        public const string DBContainerName = "CognitiveFiles";
+        public const string DbName = "CognitiveFilesDb";
+        public const string DbCognitiveFilesContainer = "CognitiveFiles";
+        public const string DbUserAccountsContainer = "UserAccounts";
     }
 }

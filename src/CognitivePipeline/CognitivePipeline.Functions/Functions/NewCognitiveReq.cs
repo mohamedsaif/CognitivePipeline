@@ -9,14 +9,26 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.Net.Http;
 using CognitivePipeline.Functions.Models;
+using CognitivePipeline.Functions.Abstractions;
 
 namespace CognitivePipeline.Functions.Functions
 {
     /// <summary>
     /// Azure Function that primarily parse & save both the Cognitive File details to Cosmos DB, Cognitive File bytes to Azure Storage container
     /// </summary>
-    public static class NewCognitiveReq
+    public class NewCognitiveReq
     {
+        private ICognitiveFilesRepository cognitiveFilesRepo;
+
+        /// <summary>
+        /// Leveraging the new Azure Functions Dependency Injection by sending common services in the constructor
+        /// </summary>
+        /// <param name="filesRepo">Cosmos Db repository for Cognitive Files</param>
+        public NewCognitiveReq(ICognitiveFilesRepository filesRepo)
+        {
+            cognitiveFilesRepo = filesRepo;
+        }
+
         /// <summary>
         /// Initiate new cognitive pipeline processing for a document
         /// </summary>

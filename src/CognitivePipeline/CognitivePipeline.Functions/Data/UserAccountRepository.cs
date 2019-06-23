@@ -9,14 +9,13 @@ using System.Threading.Tasks;
 
 namespace CognitivePipeline.Functions.Data
 {
-    public class CognitiveFileRepository : CosmosDbRepository<CognitiveFile>, ICognitiveFilesRepository
+    public class UserAccountRepository : CosmosDbRepository<UserAccount>, IUserAccountRepository
     {
-        public CognitiveFileRepository(ICosmosDbClientFactory factory) : base(factory) { }
+        public UserAccountRepository(ICosmosDbClientFactory factory) : base(factory) { }
 
-        public override string CollectionName { get; } = AppConstants.DbCognitiveFilesContainer;
-        public override string GenerateId(CognitiveFile entity) => $"{entity.OwnerId}:{Guid.NewGuid()}";
+        public override string CollectionName { get; } = AppConstants.DbUserAccountsContainer;
+        public override string GenerateId(UserAccount entity) => $"{entity.AccountId}:{Guid.NewGuid()}";
         public override PartitionKey ResolvePartitionKey(string entityId) => new PartitionKey(entityId.Split(':')[0]);
     }
 
-}
 }
