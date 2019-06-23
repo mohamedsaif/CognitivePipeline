@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CognitivePipeline.Functions.Models
 {
-    public enum CognitiveService
+    public enum CognitiveServiceType
     {
         FaceDetection, FaceVerification, OCR, ImageAnalysis, CustomVisionClassification, CustomVisionObjectDetection
     }

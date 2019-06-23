@@ -13,7 +13,7 @@ namespace CognitivePipeline.Functions.Models
     public class CognitiveStep
     {
         [JsonProperty("cognitiveServiceType")]
-        public CognitiveService ServiceType { get; set; }
+        public CognitiveServiceType ServiceType { get; set; }
 
         [JsonProperty("rawOutput")]
         public string RawOutput { get; set; }
@@ -29,5 +29,8 @@ namespace CognitivePipeline.Functions.Models
 
         [JsonProperty("status")]
         public string Status { get; set; }
+
+        [JsonProperty("fileUrl")]
+        public string FileUrl { get; set; }
     }
 }

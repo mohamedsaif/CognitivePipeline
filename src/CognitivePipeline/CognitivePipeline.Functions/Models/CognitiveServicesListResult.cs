@@ -13,7 +13,7 @@ namespace CognitivePipeline.Functions.Models
         public string[] AvaiableServices {
             get
             {
-                return Enum.GetNames(typeof(CognitiveService));
+                return Enum.GetNames(typeof(CognitiveServiceType));
             }
         }
     }

@@ -10,6 +10,6 @@ namespace CognitivePipeline.Functions.Models.DTO
     public class CognitiveStepDTO
     {
         [JsonProperty("cognitiveServiceType")]
-        public CognitiveService ServiceType { get; set; }
+        public CognitiveServiceType ServiceType { get; set; }
     }
 }
