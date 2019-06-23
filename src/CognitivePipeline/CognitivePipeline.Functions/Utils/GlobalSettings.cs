@@ -16,12 +16,22 @@ namespace CognitivePipeline.Functions.Utils
         static HttpClient client = new HttpClient();
         static AzureServiceTokenProvider azureServiceTokenProvider;
         static KeyVaultClient kvClient;
-
+        
+        /// <summary>
+        /// Get environment variable value
+        /// </summary>
+        /// <param name="name">Name of the environment variable</param>
+        /// <returns></returns>
         public static string GetEnvironmentVariable(string name)
         {
             return System.Environment.GetEnvironmentVariable(name, EnvironmentVariableTarget.Process);
         }
 
+        /// <summary>
+        /// Get secure key vault secret
+        /// </summary>
+        /// <param name="secretName">Azure Key Vault secret name</param>
+        /// <returns></returns>
         public static async Task<string> GetKeyVaultSecret(string secretName)
         {
             //Don't forget to provision a service identity on your function. Refer to documentation for further information
@@ -34,6 +44,12 @@ namespace CognitivePipeline.Functions.Utils
             return secretValue;
         }
 
+        /// <summary>
+        /// Aync wrapper to get both secure and non-secure settings
+        /// </summary>
+        /// <param name="keyName">key name</param>
+        /// <param name="isSecret">Boolean that define whether to bring the value from Environment or from Azure Key Vault</param>
+        /// <returns></returns>
         public static async Task<string> GetKeyValue(string keyName, bool isSecret)
         {
             if (isSecret)
@@ -42,6 +58,10 @@ namespace CognitivePipeline.Functions.Utils
             return GetEnvironmentVariable(keyName);
         }
 
+        /// <summary>
+        /// Wrapper to get both secure and non-secure settings
+        /// </summary>
+        /// <param name="keyName">key name. This would be secure or non-secure based on the environment variable "Env". It would be secured if Env = Protected</param>
         public static string GetKeyValue(string keyName)
         {
             bool isSecret = GetEnvironmentVariable("Env") == "Protected";

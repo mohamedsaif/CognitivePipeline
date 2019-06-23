@@ -16,7 +16,13 @@ namespace CognitivePipeline.Functions.Utils
         public static HttpClient httpClient = new HttpClient();
         private static string functionKey = GlobalSettings.GetKeyValue("FunctionGlobalKey");
 
-        public static async Task<IActionResult> CallFunction(string functionUri, StringContent content)
+        /// <summary>
+        /// Execute a HTTP triggered function and return the execution result
+        /// </summary>
+        /// <param name="functionUri">FQDN of the target function</param>
+        /// <param name="content">Json body to be sent to target function</param>
+        /// <returns></returns>
+        public static async Task<IActionResult> ExecFunction(string functionUri, StringContent content)
         {
             var result = "";
             httpClient.DefaultRequestHeaders.Clear();

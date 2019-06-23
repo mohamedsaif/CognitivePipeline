@@ -7,27 +7,32 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using CognitivePipeline.Functions.Models;
+using System.Net;
+using System.Net.Http;
 
 namespace CognitivePipeline.Functions.Functions
 {
     public static class GetAvailableServices
     {
+        /// <summary>
+        /// Return a list of the current available services in the cognitive pipeline
+        /// </summary>
+        /// <param name="req">Hold the request object</param>
+        /// <param name="log">Injecting the logger</param>
+        /// <returns></returns>
         [FunctionName("GetAvailableServices")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequestMessage req,
             ILogger log)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
+            log.LogInformation("******* GetAvailableServices starting");
 
-            string name = req.Query["name"];
+            var result = new CognitiveServicesListResult {
+                StatusCode = HttpStatusCode.OK
+            };
 
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            name = name ?? data?.name;
-
-            return name != null
-                ? (ActionResult)new OkObjectResult($"Hello, {name}")
-                : new BadRequestObjectResult("Please pass a name on the query string or in the request body");
+            return new OkObjectResult(result);
         }
     }
 }
