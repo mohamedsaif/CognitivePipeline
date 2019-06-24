@@ -16,5 +16,7 @@ namespace CognitivePipeline.Functions
         public const string DbName = "CognitiveFilesDb";
         public const string DbCognitiveFilesContainer = "CognitiveFiles";
         public const string DbUserAccountsContainer = "UserAccounts";
+        public const string NewQueueName = "newreq";
+        public const string CallbackQueueName = "callback";
     }
 }

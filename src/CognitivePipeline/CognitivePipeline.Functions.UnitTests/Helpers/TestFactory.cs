@@ -1,4 +1,6 @@
-﻿using CognitivePipeline.Functions.Models.DTO;
+﻿using CognitivePipeline.Functions.Abstractions;
+using CognitivePipeline.Functions.Models.DTO;
+using CognitivePipeline.Functions.UnitTests.Mocks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.Logging;
@@ -13,6 +15,29 @@ namespace CognitivePipeline.Functions.UnitTests.Helpers
 {
     public class TestFactory
     {
+        private static List<CognitiveFileDTO> cognitiveFileDTOs;
+
+        public static List<CognitiveFileDTO> CognitiveFileDTOs
+        {
+            get {
+                if (cognitiveFileDTOs == null)
+                    cognitiveFileDTOs = GetData();
+                return cognitiveFileDTOs;
+            }
+        }
+
+        private static List<byte[]> cognitiveFilesBytes;
+
+        public static List<byte[]> CognitiveFileBytes
+        {
+            get {
+                if (cognitiveFilesBytes == null)
+                    cognitiveFilesBytes = GetFiles();
+                return cognitiveFilesBytes;
+            }
+        }
+
+
         public static List<CognitiveFileDTO> GetData()
         {
             CognitiveFileDTO newFile1 = new CognitiveFileDTO
@@ -25,8 +50,8 @@ namespace CognitivePipeline.Functions.UnitTests.Helpers
 
             newFile1.CognitivePipelineActions = new List<CognitiveStepDTO>
             {
-                new CognitiveStepDTO { ServiceType = Models.CognitiveService.OCR },
-                new CognitiveStepDTO { ServiceType = Models.CognitiveService.FaceDetection }
+                new CognitiveStepDTO { ServiceType = Models.CognitiveServiceType.OCR },
+                new CognitiveStepDTO { ServiceType = Models.CognitiveServiceType.FaceDetection }
             };
 
             CognitiveFileDTO newFile2 = new CognitiveFileDTO
@@ -39,8 +64,8 @@ namespace CognitivePipeline.Functions.UnitTests.Helpers
 
             newFile2.CognitivePipelineActions = new List<CognitiveStepDTO>
             {
-                new CognitiveStepDTO { ServiceType = Models.CognitiveService.ImageAnalysis },
-                new CognitiveStepDTO { ServiceType = Models.CognitiveService.OCR }
+                new CognitiveStepDTO { ServiceType = Models.CognitiveServiceType.ImageAnalysis },
+                new CognitiveStepDTO { ServiceType = Models.CognitiveServiceType.OCR }
             };
 
             return new List<CognitiveFileDTO> { newFile1, newFile2 };
@@ -56,24 +81,10 @@ namespace CognitivePipeline.Functions.UnitTests.Helpers
             return result;
         }
 
-        public static HttpRequestMessage CreateMultipartRequest(string url, Dictionary<string, HttpContent> content)
+        private static HttpRequestMessage CreateMultipartRequest(string url, Dictionary<string, HttpContent> content)
         {
-            //var request = new DefaultHttpRequest(new DefaultHttpContext())
-            //{
-            //    Method = "POST",
-            //};
-            
             HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Post, url);
 
-            //using (var postContent = new MultipartFormDataContent("----MyBoundary"))
-            //{
-            //    foreach (KeyValuePair<string, HttpContent> entry in content)
-            //    {
-            //        postContent.Add(entry.Value, entry.Key);
-            //    }
-
-            //    req.Content = postContent;
-            //}
             var postContent = new MultipartFormDataContent("----MyBoundary");
 
             foreach (KeyValuePair<string, HttpContent> entry in content)
@@ -88,7 +99,7 @@ namespace CognitivePipeline.Functions.UnitTests.Helpers
 
         public static HttpRequestMessage GetMultipartRequest(int index)
         {
-            var fileInfo = GetData()[index];
+            var fileInfo = CognitiveFileDTOs[index];
             var stringContent = new StringContent(JsonConvert.SerializeObject(fileInfo));
 
             var fileData = GetFiles()[index];
@@ -117,6 +128,21 @@ namespace CognitivePipeline.Functions.UnitTests.Helpers
             }
 
             return logger;
+        }
+
+        public static IStorageRepository CreateStorageRepositoryMock()
+        {
+            return new StorageRepositoryMock();
+        }
+
+        public static ICognitiveFilesRepository CreateCognitiveFilesRepositoryMock()
+        {
+            return new CognitiveFilesRepositoryMock();
+        }
+
+        public static IUserAccountRepository CreateUserAccountsRepositoryMock()
+        {
+            return new UserAccountsRepository();
         }
     }
 }

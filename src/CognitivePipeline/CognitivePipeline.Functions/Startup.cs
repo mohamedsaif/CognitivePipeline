@@ -30,8 +30,13 @@ namespace CognitivePipeline.Functions
                 return new AzureBlobStorageRepository(storageConnection, AppConstants.StorageContainerName);
             });
 
+            builder.Services.AddSingleton<IQueueRepository>((s) =>
+            {
+                return new AzureQueueStorageRepository(storageConnection, AppConstants.NewQueueName);
+            });
+
             //Register our cosmos db repository for Cognitive Files :)
-            builder.Services.AddSingleton<ICognitiveFilesRepository, CognitiveFileRepository>();
+            builder.Services.AddSingleton<ICognitiveFileRepository, CognitiveFileRepository>();
             builder.Services.AddSingleton<IUserAccountRepository, UserAccountRepository>();
         }
     }

@@ -21,7 +21,7 @@ namespace CognitivePipeline.Functions.Functions
     /// </summary>
     public class NewCognitiveReq
     {
-        private readonly ICognitiveFilesRepository cognitiveFilesRepo;
+        private readonly ICognitiveFileRepository cognitiveFilesRepo;
         private readonly IUserAccountRepository userAccountsRepo;
         private readonly IStorageRepository filesStorageRepo;
 
@@ -29,7 +29,7 @@ namespace CognitivePipeline.Functions.Functions
         /// Leveraging the new Azure Functions Dependency Injection by sending common services in the constructor
         /// </summary>
         /// <param name="filesRepo">Cosmos Db repository for Cognitive Files</param>
-        public NewCognitiveReq(ICognitiveFilesRepository filesRepo, IUserAccountRepository usersRepo, IStorageRepository storageRepo)
+        public NewCognitiveReq(ICognitiveFileRepository filesRepo, IUserAccountRepository usersRepo, IStorageRepository storageRepo)
         {
             cognitiveFilesRepo = filesRepo;
             userAccountsRepo = usersRepo;

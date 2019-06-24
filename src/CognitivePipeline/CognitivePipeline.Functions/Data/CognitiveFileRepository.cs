@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CognitivePipeline.Functions.Data
 {
-    public class CognitiveFileRepository : CosmosDbRepository<CognitiveFile>, ICognitiveFilesRepository
+    public class CognitiveFileRepository : CosmosDbRepository<CognitiveFile>, ICognitiveFileRepository
     {
         public CognitiveFileRepository(ICosmosDbClientFactory factory) : base(factory) { }
 

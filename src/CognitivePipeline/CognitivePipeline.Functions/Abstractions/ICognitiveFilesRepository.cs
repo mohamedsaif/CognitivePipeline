@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CognitivePipeline.Functions.Abstractions
 {
-    public interface ICognitiveFilesRepository : IRepository<CognitiveFile>
+    public interface ICognitiveFileRepository : IRepository<CognitiveFile>
     {
         
     }

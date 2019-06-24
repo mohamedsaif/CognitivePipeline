@@ -18,11 +18,11 @@ namespace CognitivePipeline.Functions.Orchestrator
 {
     public class CognitivePipelineOrchestrator
     {
-        private readonly ICognitiveFilesRepository cognitiveFilesRepo;
+        private readonly ICognitiveFileRepository cognitiveFilesRepo;
         private readonly IUserAccountRepository userAccountsRepo;
         private readonly IStorageRepository filesStorageRepo;
 
-        public CognitivePipelineOrchestrator(ICognitiveFilesRepository filesRepo, IUserAccountRepository usersRepo, IStorageRepository storageRepo)
+        public CognitivePipelineOrchestrator(ICognitiveFileRepository filesRepo, IUserAccountRepository usersRepo, IStorageRepository storageRepo)
         {
             cognitiveFilesRepo = filesRepo;
             userAccountsRepo = usersRepo;
