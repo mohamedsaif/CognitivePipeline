@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,7 @@ namespace CognitivePipeline.Functions.Models
         public string FileUrl { get; set; }
 
         [JsonProperty("mediaType")]
+        [JsonConverter(typeof(StringEnumConverter))]
         public FileMediaType MediaType { get; set; }
 
         [JsonProperty("cognitivePipelineActions")]

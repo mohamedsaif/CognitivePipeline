@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,8 @@ namespace CognitivePipeline.Functions.Models
     /// </summary>
     public class CognitiveStep
     {
-        [JsonProperty("cognitiveServiceType")]
+        [JsonProperty("ServiceType")]
+        [JsonConverter(typeof(StringEnumConverter))]
         public CognitiveServiceType ServiceType { get; set; }
 
         [JsonProperty("rawOutput")]

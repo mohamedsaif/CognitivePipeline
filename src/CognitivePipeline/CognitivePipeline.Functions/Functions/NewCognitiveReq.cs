@@ -12,6 +12,7 @@ using CognitivePipeline.Functions.Models;
 using CognitivePipeline.Functions.Abstractions;
 using CognitivePipeline.Functions.Models.DTO;
 using CognitivePipeline.Functions.Validation;
+using Newtonsoft.Json.Converters;
 
 namespace CognitivePipeline.Functions.Functions
 {

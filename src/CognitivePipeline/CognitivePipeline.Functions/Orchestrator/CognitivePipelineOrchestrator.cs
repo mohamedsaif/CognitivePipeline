@@ -73,8 +73,9 @@ namespace CognitivePipeline.Functions.Orchestrator
             foreach (var task in parallelTasks)
             {
                 var updatedStep = task.Result;
-                var originalStep = input.CognitivePipelineActions.Where(s => s.ServiceType == updatedStep.ServiceType).FirstOrDefault();
-                originalStep = updatedStep;
+                var originalStepIndex = input.CognitivePipelineActions.FindIndex(s => s.ServiceType == updatedStep.ServiceType);
+                input.CognitivePipelineActions.RemoveAt(originalStepIndex);
+                input.CognitivePipelineActions.Insert(originalStepIndex, updatedStep);
             }
 
             await context.CallActivityAsync("CognitivePipeline_Callback", input);
@@ -87,8 +88,6 @@ namespace CognitivePipeline.Functions.Orchestrator
 
             string key = GlobalSettings.GetKeyValue("computerVisionKey");
             string endpoint = GlobalSettings.GetKeyValue("computerVisionEndpoint");
-
-            var recognitionMode = TextRecognitionMode.Printed;
 
             ComputerVisionClient computerVision = new ComputerVisionClient(
                 new Microsoft.Azure.CognitiveServices.Vision.ComputerVision.ApiKeyServiceClientCredentials(key),
@@ -141,14 +140,13 @@ namespace CognitivePipeline.Functions.Orchestrator
             string endpoint = GlobalSettings.GetKeyValue("faceEndpoint");
 
             IFaceClient faceClient = new FaceClient(
-                                            new Microsoft.Azure.CognitiveServices.Vision.Face.ApiKeyServiceClientCredentials(key),
-                                            new System.Net.Http.DelegatingHandler[] { })
-            { Endpoint = endpoint };
+                        new Microsoft.Azure.CognitiveServices.Vision.Face.ApiKeyServiceClientCredentials(key),
+                        new System.Net.Http.DelegatingHandler[] { })
+                        { Endpoint = endpoint };
 
             var data = await filesStorageRepo.GetFileAsync(input.FileUrl);
 
-            IList<FaceAttributeType> faceAttributes =
-                                           new FaceAttributeType[]
+            IList<FaceAttributeType> faceAttributes = new FaceAttributeType[]
                                            {
                                                 FaceAttributeType.Gender, FaceAttributeType.Age,
                                                 FaceAttributeType.Smile, FaceAttributeType.Emotion,

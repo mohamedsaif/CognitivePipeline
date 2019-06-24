@@ -28,7 +28,7 @@ namespace CognitivePipeline.Functions.Validation
                 MediaType = FileMediaType.Image,
                 Origin = file.Origin,
                 OwnerId = file.OwnerId,
-                Status = "Processing"
+                Status = "Submitted"
             };
 
             foreach(var step in file.CognitivePipelineActions)
