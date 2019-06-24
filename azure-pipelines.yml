@@ -30,5 +30,5 @@ jobs:
 - template: azure-pipelines-tests.yml
   parameters:
     Name: 'UnitTests'
-    WorkingDirectory: 'src/CognitivePipeline'
+    WorkingDirectory: 'src/CognitivePipeline/CognitivePipeline.Functions.UnitTests'
     ArtifactName: 'Unit-Tests'

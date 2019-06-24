@@ -40,6 +40,7 @@ jobs:
       command: publish
       publishWebProjects: ${{ Parameters.PublishWebApp }}
       arguments: '--configuration ${{ Parameters.BuildConfiguration }} --output $(build.artifactstagingdirectory)'
+      projects: ${{ Parameters.RestoreBuildProjects }}
       zipAfterPublish: ${{ Parameters.ZipAfterPublish }}
       workingDirectory: ${{ Parameters.WorkingDirectory }}
 
