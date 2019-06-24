@@ -24,7 +24,8 @@ jobs:
     BuildConfiguration: 'Release'
     WorkingDirectory: 'src/CognitivePipeline'
     ArtifactName: 'CognitivePipelineFunctions'
-    PublishWebApp: True
+    PublishWebApp: False
+    ZipAfterPublish: False
 
 - template: azure-pipelines-tests.yml
   parameters:
