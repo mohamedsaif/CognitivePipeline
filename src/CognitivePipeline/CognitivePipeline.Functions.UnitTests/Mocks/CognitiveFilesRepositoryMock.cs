@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CognitivePipeline.Functions.UnitTests.Mocks
 {
-    public class CognitiveFilesRepositoryMock : ICognitiveFilesRepository
+    public class CognitiveFileRepositoryMock : ICognitiveFileRepository
     {
         public Task<CognitiveFile> AddAsync(CognitiveFile entity)
         {

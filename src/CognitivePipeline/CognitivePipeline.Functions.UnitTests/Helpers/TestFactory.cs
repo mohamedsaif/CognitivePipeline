@@ -135,14 +135,19 @@ namespace CognitivePipeline.Functions.UnitTests.Helpers
             return new StorageRepositoryMock();
         }
 
-        public static ICognitiveFilesRepository CreateCognitiveFilesRepositoryMock()
+        public static ICognitiveFileRepository CreateCognitiveFilesRepositoryMock()
         {
-            return new CognitiveFilesRepositoryMock();
+            return new CognitiveFileRepositoryMock();
         }
 
         public static IUserAccountRepository CreateUserAccountsRepositoryMock()
         {
             return new UserAccountsRepository();
+        }
+
+        public static IQueueRepository CreateQueueRepositoryMock()
+        {
+            return new QueueRepositoryMock();
         }
     }
 }
