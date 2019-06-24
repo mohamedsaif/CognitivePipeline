@@ -1,0 +1,33 @@
+# Azure Pipelines for GitHub :)
+# More info: https://docs.microsoft.com/en-us/azure/devops/pipelines/?view=vsts
+trigger:
+  branches:
+    include:
+      - master
+      - dev
+  paths:
+    include:
+      - 'Src/CognitivePipeline'
+      - 'Src/ClientSDK'
+      - 'azure-pipelines.yml'
+      - 'azure-pipelines-webapp.yml'
+      - 'azure-pipelines-tests.yml'
+
+variables:
+  buildConfiguration: 'Release'
+
+jobs:
+- template: azure-pipelines-webapp.yml
+  parameters:
+    Name: CognitivePipeline.Functions
+    RestoreBuildProjects: '**/*.Functions.csproj'
+    BuildConfiguration: 'Release'
+    WorkingDirectory: 'Src/CognitivePipeline/CognitivePipeline.Functions'
+    ArtifactName: 'CognitivePipelineFunctions'
+    PublishWebApp: True
+
+- template: azure-pipelines-tests.yml
+  parameters:
+    Name: 'Unit-Tests'
+    WorkingDirectory: 'Src/CognitivePipeline'
+    ArtifactName: 'Unit-Tests'
