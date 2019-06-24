@@ -24,16 +24,18 @@ namespace CognitivePipeline.Functions.Functions
         private readonly ICognitiveFileRepository cognitiveFilesRepo;
         private readonly IUserAccountRepository userAccountsRepo;
         private readonly IStorageRepository filesStorageRepo;
+        private readonly IQueueRepository newReqsQueue;
 
         /// <summary>
         /// Leveraging the new Azure Functions Dependency Injection by sending common services in the constructor
         /// </summary>
         /// <param name="filesRepo">Cosmos Db repository for Cognitive Files</param>
-        public NewCognitiveReq(ICognitiveFileRepository filesRepo, IUserAccountRepository usersRepo, IStorageRepository storageRepo)
+        public NewCognitiveReq(ICognitiveFileRepository filesRepo, IUserAccountRepository usersRepo, IStorageRepository storageRepo, IQueueRepository queueRepo)
         {
             cognitiveFilesRepo = filesRepo;
             userAccountsRepo = usersRepo;
             filesStorageRepo = storageRepo;
+            newReqsQueue = queueRepo;
         }
 
         /// <summary>
@@ -47,8 +49,8 @@ namespace CognitivePipeline.Functions.Functions
             //Trigger
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequestMessage req,
 
-            //Output
-            [Queue("newreq", Connection = "cognitivePipelineStorageConnection")]ICollector<string> newReqsQueue,
+            //Output (I'm using queue repo from the dependency injection to be more independent from the trigger bindings)
+            //[Queue("newreq", Connection = "cognitivePipelineStorageConnection")]ICollector<string> newReqsQueue,
 
             //Logger
             ILogger log)
@@ -77,7 +79,7 @@ namespace CognitivePipeline.Functions.Functions
 
                 await cognitiveFilesRepo.AddAsync(cognitiveFile);
 
-                newReqsQueue.Add(JsonConvert.SerializeObject(cognitiveFile));
+                await newReqsQueue.QueueMessage(JsonConvert.SerializeObject(cognitiveFile));
 
                 return new CreatedResult(cognitiveFile.FileName, null);
             }
