@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29009.5
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CognitivePipeline.Functions", "CognitivePipeline.Functions\CognitivePipeline.Functions.csproj", "{765BD0E4-745C-4F68-A037-ECCABA529196}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CognitivePipeline.Functions", "CognitivePipeline.Functions\CognitivePipeline.Functions.csproj", "{765BD0E4-745C-4F68-A037-ECCABA529196}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CognitivePipeline.Functions.UnitTests", "CognitivePipeline.Functions.UnitTests\CognitivePipeline.Functions.UnitTests.csproj", "{573E616D-5A16-48DD-B625-D43FF91AE9CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CognitivePipeline.Functions.UnitTests", "CognitivePipeline.Functions.UnitTests\CognitivePipeline.Functions.UnitTests.csproj", "{573E616D-5A16-48DD-B625-D43FF91AE9CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CognitivePipeline.RTC", "CognitivePipeline.RTC\CognitivePipeline.RTC.csproj", "{48BD1932-53B5-40BF-92DA-F1A3C2B907AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{573E616D-5A16-48DD-B625-D43FF91AE9CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{573E616D-5A16-48DD-B625-D43FF91AE9CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{573E616D-5A16-48DD-B625-D43FF91AE9CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48BD1932-53B5-40BF-92DA-F1A3C2B907AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48BD1932-53B5-40BF-92DA-F1A3C2B907AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48BD1932-53B5-40BF-92DA-F1A3C2B907AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48BD1932-53B5-40BF-92DA-F1A3C2B907AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
