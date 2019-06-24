@@ -19,7 +19,7 @@ variables:
 jobs:
 - template: azure-pipelines-webapp.yml
   parameters:
-    Name: CognitivePipeline.Functions
+    Name: 'CognitivePipelineFunctions'
     RestoreBuildProjects: '**/*.Functions.csproj'
     BuildConfiguration: 'Release'
     WorkingDirectory: 'Src/CognitivePipeline/CognitivePipeline.Functions'
@@ -28,6 +28,6 @@ jobs:
 
 - template: azure-pipelines-tests.yml
   parameters:
-    Name: 'Unit-Tests'
+    Name: 'UnitTests'
     WorkingDirectory: 'Src/CognitivePipeline'
     ArtifactName: 'Unit-Tests'
