@@ -22,7 +22,7 @@ jobs:
     Name: 'CognitivePipelineFunctions'
     RestoreBuildProjects: '**/*.Functions.csproj'
     BuildConfiguration: 'Release'
-    WorkingDirectory: 'Src/CognitivePipeline/CognitivePipeline.Functions'
+    WorkingDirectory: 'Src/CognitivePipeline'
     ArtifactName: 'CognitivePipelineFunctions'
     PublishWebApp: True
 
