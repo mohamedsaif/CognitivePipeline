@@ -35,6 +35,7 @@ jobs:
       publishWebProjects: ${{ Parameters.PublishWebApp }}
       arguments: '--configuration ${{ Parameters.BuildConfiguration }} --output $(build.artifactstagingdirectory)'
       zipAfterPublish: ${{ Parameters.ZipAfterPublish }}
+      projects: ${{ Parameters.RestoreBuildProjects }}
       workingDirectory: ${{ Parameters.WorkingDirectory }}
 
   - task: PublishBuildArtifacts@1
