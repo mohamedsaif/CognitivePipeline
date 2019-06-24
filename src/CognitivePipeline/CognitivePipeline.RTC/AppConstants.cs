@@ -9,5 +9,6 @@ namespace CognitivePipeline.RTC
     public static class AppConstants
     {
         public const string SignalRHub = "cognitivepipelinertc";
+        public const string SignalRConnection = "SignalRConnectionString";
     }
 }

@@ -21,7 +21,7 @@ namespace CognitivePipeline.RTC.Functions
             LeaseCollectionName = "leases")]IReadOnlyList<CognitiveFile> input,
 
             //Output
-            [SignalR(HubName = AppConstants.SignalRHub)]IAsyncCollector<SignalRMessage> signalRMessages,
+            [SignalR(HubName = AppConstants.SignalRHub, ConnectionStringSetting = AppConstants.SignalRConnection)]IAsyncCollector<SignalRMessage> signalRMessages,
 
             ILogger log)
         {

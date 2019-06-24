@@ -14,8 +14,11 @@ namespace CognitivePipeline.RTC.RTC
     {
         [FunctionName("negotiate")]
         public static SignalRConnectionInfo Negotiate(
+            //Trigger
             [HttpTrigger(AuthorizationLevel.Anonymous)]HttpRequest req,
-            [SignalRConnectionInfo(HubName = AppConstants.SignalRHub)]SignalRConnectionInfo connectionInfo)
+
+            //Connection Binding
+            [SignalRConnectionInfo(HubName = AppConstants.SignalRHub, ConnectionStringSetting = AppConstants.SignalRConnection)]SignalRConnectionInfo connectionInfo)
         {
             return connectionInfo;
         }
