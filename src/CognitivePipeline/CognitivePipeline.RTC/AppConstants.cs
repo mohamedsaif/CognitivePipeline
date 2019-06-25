@@ -8,7 +8,13 @@ namespace CognitivePipeline.RTC
 {
     public static class AppConstants
     {
-        public const string SignalRHub = "cognitivepipelinertc";
+        //Resources Settings/names
+        public const string SignalRHubName = "cognitivepipelinertc";
+        public const string CognitiveDbName = "CognitiveFilesDb";
+        public const string CognitiveFilesContainerName = "CognitiveFiles";
+
+        //App Configuration Settings Names
+        public const string CogntiveFilesDbConnection = "CogntiveFilesDbConnectionString";
         public const string SignalRConnection = "SignalRConnectionString";
     }
 }

@@ -11,17 +11,19 @@ namespace CognitivePipeline.RTC.Functions
 {
     public static class CognitiveFilesDbFeedProcessor
     {
-        [FunctionName("CognitiveFilesDbFeedProcessor")]
+        [FunctionName("CognitiveFilesUpdatesProcessor")]
         public static async Task Run(
             //Trigger
             [CosmosDBTrigger(
-            databaseName: "CognitiveFilesDb",
-            collectionName: "CognitiveFiles",
-            ConnectionStringSetting = "CogntiveFilesDbConnection",
-            LeaseCollectionName = "leases")]IReadOnlyList<CognitiveFile> input,
+            databaseName: AppConstants.CognitiveDbName,
+            collectionName: AppConstants.CognitiveFilesContainerName,
+            ConnectionStringSetting = AppConstants.CogntiveFilesDbConnection,
+            LeaseCollectionName = "leases", 
+            CreateLeaseCollectionIfNotExists = true)]
+            IReadOnlyList<CognitiveFile> input,
 
             //Output
-            [SignalR(HubName = AppConstants.SignalRHub, ConnectionStringSetting = AppConstants.SignalRConnection)]IAsyncCollector<SignalRMessage> signalRMessages,
+            [SignalR(HubName = AppConstants.SignalRHubName, ConnectionStringSetting = AppConstants.SignalRConnection)]IAsyncCollector<SignalRMessage> signalRMessages,
 
             ILogger log)
         {
@@ -34,7 +36,7 @@ namespace CognitivePipeline.RTC.Functions
                 {
                     await signalRMessages.AddAsync(new SignalRMessage
                     {
-                        Target = "ProcessingUpdate",
+                        Target = "UpdateNotifcation",
                         Arguments = new[] { item },
                         UserId = item.OwnerId
                     });

@@ -27,6 +27,16 @@ jobs:
     PublishWebApp: False
     ZipAfterPublish: False
 
+- template: azure-pipelines-webapp.yml
+  parameters:
+    Name: 'CognitivePipelineRTC'
+    RestoreBuildProjects: '**/*.RTC.csproj'
+    BuildConfiguration: 'Release'
+    WorkingDirectory: 'src/CognitivePipeline'
+    ArtifactName: 'CognitivePipelineRTC'
+    PublishWebApp: False
+    ZipAfterPublish: False
+
 - template: azure-pipelines-tests.yml
   parameters:
     Name: 'UnitTests'

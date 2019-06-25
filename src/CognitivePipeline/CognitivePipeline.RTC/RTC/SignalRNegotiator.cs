@@ -18,7 +18,11 @@ namespace CognitivePipeline.RTC.RTC
             [HttpTrigger(AuthorizationLevel.Anonymous)]HttpRequest req,
 
             //Connection Binding
-            [SignalRConnectionInfo(HubName = AppConstants.SignalRHub, ConnectionStringSetting = AppConstants.SignalRConnection)]SignalRConnectionInfo connectionInfo)
+            [SignalRConnectionInfo
+            (HubName = AppConstants.SignalRHubName, 
+            ConnectionStringSetting = AppConstants.SignalRConnection,
+            UserId = "headers.x-ms-client-principal-id")]
+            SignalRConnectionInfo connectionInfo)
         {
             return connectionInfo;
         }
