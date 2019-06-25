@@ -1,0 +1,53 @@
+#app {
+    padding-top: 25px;
+}
+
+.content-box {
+    width: 200px;
+    border-radius: 3px;
+    padding: 10px;
+    border: solid 1px #eee;
+    text-align: center;
+    box-shadow: -1px 0px 2px 0px #eee;
+    -webkit-box-shadow: -1px 0px 2px 0px #eee;
+    -moz-box-shadow: -1px 0px 2px 0px #eee;
+    margin: 20px 20px 20px 0;
+}
+
+    .content-box:hover {
+        border: solid 1px rgb(212, 212, 212);
+    }
+
+.lead {
+    font-size: 1.5em;
+    font-weight: 400;
+}
+
+.is-submitted {
+    color: blue;
+    font-weight: bold;
+}
+
+.is-processed {
+    color: green;
+    font-weight: bold;
+}
+
+.is-na {
+    color: gray;
+    font-weight: bold;
+}
+
+.change {
+    text-transform: uppercase;
+    color: #999;
+    font-size: .8em;
+}
+
+.fade-enter-active {
+  transition: all 1.5s ease;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
