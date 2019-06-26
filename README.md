@@ -67,13 +67,13 @@ You will need to provision the following services:
 - 2 Azure Function Apps (one for processing pipeline and one for RTC callback)
 - 1 Storage Account
 - 1 Cosmos Db
-- 1 API Management (OPTIONAL)
-- 1 SignalR Service
+- 1 API Management (OPTIONAL) - You can check out the [new serverless](https://azure.microsoft.com/en-us/blog/announcing-azure-api-management-for-serverless-architectures/) hosting plan 🎉
+- 1 SignalR Service (in serverless mode)
 - 1 Cognitive Service 
 - 1 Face Cognitive Service (OPTIONAL)
 - 1 Azure Search Index (OPTIONAL)
 - 1 Azure AD (Or Azure AD B2C) tenant (OPTIONAL)
-- 1 Azure KeyVault (OPTIONAL) - [GlobalSettings.cs]() is designed to allow fetching the settings from either the environment or Azure Key Vault.
+- 1 Azure KeyVault (OPTIONAL) - [GlobalSettings.cs](src/CognitivePipeline/CognitivePipeline.Functions/Utils/GlobalSettings.cs) is designed to allow fetching the settings from either the environment or Azure Key Vault.
 
 You need the following local.settings.json to run locally or set them up in Environment Variables in the Function App configuration.
 
@@ -130,9 +130,61 @@ Also this is a view of how I'm releasing to my Function App:
 
 ![AzurePipelines](res/azurepipelines-release.png)
 
+## Testing The Solution 
+
+Ohh so you downloaded the code immediately and want to start testing it out! Let's check what you need to know to make the magic happens.
+
+### Azure Functions Local Debugging
+
+Azure Function has a great local debugging experience in my opinion, just make sure you have the tools installed.
+
+I must admit, I use the full Visual Studio in building this project, but it is perfectly fine to do that in the amazing VS Code as well.
+
+I used a hack to allow me to launch multiple Azure Function debugging session. In Visual Studio you can set the solution to have multiple startup project and configure one of the projects to use a different port for debugging.
+
+>**NOTE** You can read more about [multiple function debugging here](https://medium.com/microsoftazure/debugging-multiple-azure-functions-apps-at-the-same-time-c1040c8ab51c) written by the one and only Jim Bennett
+
+![Multiple-Project-Start](res/function-multistart.png)
+
+![Multiple-Project-Start](res/function-portchange.png)
+
+Make sure you have your local settings and the related Azure services provisioned before hitting F5.
+
+### Postman - Calling Functions Endpoints
+
+You have your eyes staring at a fully healthy and running Azure Functions, it is time to hit these endpoints with well formed requests using Postman!
+
+I've included in this repo a Postman collection export under [Postman-APIs](src/Postman-APIs/CognitivePipeline.postman_collection.json) folder. Just import it and let the testing begin.
+
+![Postman](res/postman.png)
+
+### JavaScript/Vue Client
+
+I wanted a simple clean client that can connect to the SignalR service and show cool list of all the cognitive files processing in real-time.
+
+Under **src/Clients/Client.JS** you will find few simple HTML, CSS and js files.
+
+By using VS Code terminal or any command line tool, you can execute the following very well known npm commands:
+
+```js
+npm install
+```
+
+The above command will install all the referenced modules (it is like dotnet restore).
+
+```js
+npm start
+```
+
+Will launch the app in the browser at http://localhost:8080.
+
+>**NOTE:** It is a good practice to open the development tools in the browser to have a look at the console logs.
+
+Now you are ready, just start posting files using Postman and see how the client log a new entry when the file is submitted and replace it with updated results when the durable orchestrator finishes updating the database with all the cognitive goodness.
+
 ## Roadmap
 
-Currently I'm working to:
+Currently I'm hoping to finish working on:
 1.  Completing both API Management and Azure Active Directory integration 👌
 2.  Adjust SignalR usage to allow different users to listening to only the events published under their account 🤷‍
 3.  Introduce new cognitive steps capabilities (especially the [Azure Video Indexer](https://docs.microsoft.com/en-us/azure/media-services/video-indexer/) service)

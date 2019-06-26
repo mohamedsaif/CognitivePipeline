@@ -1,0 +1,69 @@
+{
+	"info": {
+		"_postman_id": "4daa7965-5e1e-4540-82b5-d56421f2f723",
+		"name": "CognitivePipeline",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Local",
+			"item": [
+				{
+					"name": "GetAvailableServices",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7071/api/GetAvailableServices",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7071",
+							"path": [
+								"api",
+								"GetAvailableServices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "NewCognitiveReq",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "info",
+									"value": "{\n  \"ownerId\": \"783ed915-8e5d-418b-ade0-8cc5f217ecf7\",\n  \"fileName\": \"mosaif_id.png\",\n  \"mediaType\": \"Image\",\n  \"cognitivePipelineActions\": [\n    {\n      \"serviceType\": \"OCR\"\n    },\n    {\n      \"serviceType\": \"FaceDetection\"\n    }\n  ],\n  \"origin\": \"Postman\"\n}",
+									"type": "text"
+								},
+								{
+									"key": "data",
+									"type": "file",
+									"src": "/C:/Biz/Repos/N/ContosoShopManager/Res/mosaif_id.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7071/api/NewCognitiveReq",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7071",
+							"path": [
+								"api",
+								"NewCognitiveReq"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
