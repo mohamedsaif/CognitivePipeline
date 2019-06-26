@@ -9,7 +9,7 @@ Azure serverless-based architecture to process files through a cognitive pipelin
 
 ## Overview
 
-A customer requested assistance in creating a processing pipeline for uploaded files leveraging mainly Azure Cognitive Services to attach rich attributes to that file.
+A customer requested assistance in creating a processing pipeline for uploaded files leveraging mainly [Azure Cognitive Services](https://azure.microsoft.com/en-us/services/cognitive-services/) to attach rich attributes to that file. These data can be then used to search the data and/or plot rich visual interfaces.
 
 Solution requirements:
 
@@ -32,29 +32,29 @@ Later on I will discuss the Azure components in more details, for now let's have
 
 Let's discuss the steps for the 2 main scenarios:
 
-### Cognitive Pipeline Processing
+### 1. Cognitive Pipeline Processing
 
 Below is the steps highlighted in the architecture diagram showing what is happing when a user submit a new file with instructions for processing.
 
-1. User submit a new Cognitive File request ([CognitiveFile](src/CognitivePipeline/CognitivePipeline.Functions/Models/CognitiveStep.cs) json + file) to [NewCognitiveReq](src/CognitivePipeline/CognitivePipeline.Functions/Functions/NewCognitiveReq.cs) function (assuming that the client already authenticated with Azure AD and have the appropriate API Management subscription key)
-2. NewCognitiveReq function would validate then upload file to storage and update Cosmos Db with the new cognitive instructions.
-3. NewCognitiveReq function will then put a new message in **newreq** storage queue for the async file processing.
-4. A [durable function](https://docs.microsoft.com/en-us/azure/azure-functions/durable/durable-functions-overview) orchestrator named [CognitivePipelineOrchestrator_QueueStart](src/CognitivePipeline/CognitivePipeline.Functions/Orchestrator/CognitivePipelineOrchestrator.cs#L34-L52) is triggered by the **newreq** queue new cognitive file processing request.
-5. Using [Fan-Out-Fan-In durable function pattern](), the durable function orchestrator will:
-   1. A loop through all requested [CognitiveStep](src/CognitivePipeline/CognitivePipeline.Functions/Models/CognitiveStep.cs)s to a create a new thread to run that particular instruction.
-   2. Each cognitive activity will finish execution and report back to the orchestrator with the results
-   3. The function orchestrator will wait for all steps to finish via ```Task.WaitAll(parallelTasks)```;
+1. User submit a new Cognitive File request ([CognitiveFile](src/CognitivePipeline/CognitivePipeline.Functions/Models/CognitiveStep.cs) json + file data) to [NewCognitiveReq](src/CognitivePipeline/CognitivePipeline.Functions/Functions/NewCognitiveReq.cs) function (assuming that the client already authenticated with Azure AD and have the appropriate API Management subscription key)
+2. ```NewCognitiveReq``` function would validate then upload file to storage and update Cosmos Db with the new cognitive instructions.
+3. NewCognitiveReq function will then put a new message in ```newreq``` storage queue for the async file processing.
+4. A [durable function](https://docs.microsoft.com/en-us/azure/azure-functions/durable/durable-functions-overview) orchestrator named [CognitivePipelineOrchestrator_QueueStart](src/CognitivePipeline/CognitivePipeline.Functions/Orchestrator/CognitivePipelineOrchestrator.cs#L34-L52) is triggered by the ```newreq``` queue new cognitive file processing request.
+5. Using [Fan-Out-Fan-In durable function pattern](https://docs.microsoft.com/en-us/azure/azure-functions/durable/durable-functions-concepts#patterns), the durable function orchestrator will:
+   1. Loop through all requested [CognitiveStep](src/CognitivePipeline/CognitivePipeline.Functions/Models/CognitiveStep.cs)s to a create a new thread to run that particular instruction.
+   2. Each cognitive activity will finish execution in parallel and report back to the orchestrator with the results.
+   3. The function orchestrator will wait for all steps to finish via ```Task.WaitAll(parallelTasks);```
 6. Finally the orchestrator will send the final result to [CognitivePipeline_Callback](src/CognitivePipeline/CognitivePipeline.Functions/Orchestrator/CognitivePipelineOrchestrator.cs#L183-L194) to commit the updates to the Cosmos Db
 
-### Clients Real-Time-Communication
+### 2. Clients Real-Time-Communication
 
 Leveraging the powerful [Cosmos Db Change Feed with Azure Function](https://docs.microsoft.com/en-us/azure/azure-signalr/signalr-concept-azure-functions) and [SignalR](https://docs.microsoft.com/en-us/azure/azure-signalr/signalr-overview) to add real-time-communication functionality to the registered clients.
 
 Below are the steps highlighted in the architecture diagram:
 
-1. As SignalR in Serverless mode, we need to avail a [Negotiate](src/CognitivePipeline/CognitivePipeline.RTC/RTC/SignalRNegotiator.cs) endpoint (I used Http triggered Azure Function) which will provide the client with SignalR access token.
-2. Client would then establish a connection to SignalR service listening on the configured SignalR Hub
-3. Change Feed connected Azure Function, named [CognitiveFilesDbFeedProcessor](src/CognitivePipeline/CognitivePipeline.RTC/Functions/CognitiveFilesDbFeedProcessor.cs) will listen to the updates and push it to the SignalR Hub. SignalR will then push the update to all connected clients to the Hub.
+1. As SignalR in [Serverless mode](https://docs.microsoft.com/en-us/azure/azure-signalr/signalr-concept-serverless-development-config), we need to avail a [Negotiate](src/CognitivePipeline/CognitivePipeline.RTC/RTC/SignalRNegotiator.cs) endpoint which will provide the client with SignalR access token. I used Http triggered Azure Function to accomplish that beautifully.
+2. Client would then establish a connection to SignalR service (via calling the negotiate endpoint). A client application requires a valid access token to connect to Azure SignalR Service obtained from the negotiate endpoint.
+3. Finally with a Change Feed lease connected to an Azure Function named [CognitiveFilesDbFeedProcessor](src/CognitivePipeline/CognitivePipeline.RTC/Functions/CognitiveFilesDbFeedProcessor.cs), it will listen to the updates and push it to the SignalR Hub. SignalR will then push the update to all connected clients to the Hub.
 
 I've included in the repo a simple JS client that leverages SignalR JS SDK library that would look something like:
 
@@ -73,9 +73,9 @@ You will need to provision the following services:
 - 1 Face Cognitive Service (OPTIONAL)
 - 1 Azure Search Index (OPTIONAL)
 - 1 Azure AD (Or Azure AD B2C) tenant (OPTIONAL)
-- 1 Azure KeyVault (OPTIONAL)
+- 1 Azure KeyVault (OPTIONAL) - [GlobalSettings.cs]() is designed to allow fetching the settings from either the environment or Azure Key Vault.
 
-You need the following local.settings.json to run locally or set them up in Environemnt Vairalbes in the Function App configuration.
+You need the following local.settings.json to run locally or set them up in Environment Variables in the Function App configuration.
 
 ### CognitivePipeline.Functions
 
