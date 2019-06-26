@@ -5,6 +5,7 @@ trigger:
     include:
       - master
       - dev
+      - CognitivePipeline
   paths:
     include:
       - 'Src/CognitivePipeline'
