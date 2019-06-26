@@ -64,16 +64,16 @@ I've included in the repo a simple JS client that leverages SignalR JS SDK libra
 
 You will need to provision the following services:
 
-2 Azure Function Apps (one for processing pipeline and one for RTC callback)
-1 Storage Account
-1 Cosmos Db
-1 API Management (OPTIONAL)
-1 SignalR Service
-1 Cognitive Service 
-1 Face Cognitive Service (OPTIONAL)
-1 Azure Search Index (OPTIONAL)
-1 Azure AD (Or Azure AD B2C) tenant (OPTIONAL)
-1 Azure KeyVault (OPTIONAL)
+- 2 Azure Function Apps (one for processing pipeline and one for RTC callback)
+- 1 Storage Account
+- 1 Cosmos Db
+- 1 API Management (OPTIONAL)
+- 1 SignalR Service
+- 1 Cognitive Service 
+- 1 Face Cognitive Service (OPTIONAL)
+- 1 Azure Search Index (OPTIONAL)
+- 1 Azure AD (Or Azure AD B2C) tenant (OPTIONAL)
+- 1 Azure KeyVault (OPTIONAL)
 
 You need the following local.settings.json to run locally or set them up in Environemnt Vairalbes in the Function App configuration.
 
