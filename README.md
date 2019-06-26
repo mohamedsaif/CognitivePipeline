@@ -75,6 +75,47 @@ You will need to provision the following services:
 1 Azure AD (Or Azure AD B2C) tenant (OPTIONAL)
 1 Azure KeyVault (OPTIONAL)
 
+You need the following local.settings.json to run locally or set them up in Environemnt Vairalbes in the Function App configuration.
+
+### CognitivePipeline.Functions
+
+```js
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "Env": "Development",
+    "cosmosDbEndpoint": "YOURDBENDPOINT",
+    "cosmosDbKey": "YOUDBKEY",
+    "cognitivePipelineStorageConnection": "STORAGECONNECTION",
+    "computerVisionKey": "YOURKEY",
+    "computerVisionEndpoint": "YOURENDPOINT",
+    "faceKey": "YOURKEY",
+    "faceEndpoint": "YOUENDPOINT"
+  }
+}
+```
+
+### CognitivePipeline.RTC
+
+```js
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "SignalRConnectionString": "YOURSIGNALRCONNECTION",
+    "CogntiveFilesDbConnectionString": "COSMOSDBCONNECTIONSTRING"
+  },
+  "Host": {
+    "LocalHttpPort": 7071,
+    "CORS": "http://localhost:8080",
+    "CORSCredentials": true
+  }
+}
+```
+
 ## Automated CI/CD Pipelines
 
 Using [Azure DevOps pipelines](https://github.com/marketplace/azure-pipelines) integration with GitHub, I have fully automated build and release pipelines.
