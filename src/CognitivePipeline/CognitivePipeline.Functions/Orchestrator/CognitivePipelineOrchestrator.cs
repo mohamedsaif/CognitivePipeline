@@ -186,6 +186,7 @@ namespace CognitivePipeline.Functions.Orchestrator
             log.LogInformation($"******* Starting Callback");
 
             file.IsProcessed = true;
+            file.Status = "Processed";
 
             await cognitiveFilesRepo.UpdateAsync(file);
 

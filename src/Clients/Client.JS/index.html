@@ -15,16 +15,47 @@
 
 <body>
     <div id="app" class="container">
-        <h1 class="title">Cognitive Pipeline Activities</h1>
-        <div id="cognitivepipeline">
-            <div v-for="file in cognitiveFiles" class="content-box">
+        <h1 class="title"><i class="fas fa-camera"></i> Cognitive Pipeline Activities</h1>
+        <div id="cognitiveFiles">
+            <div v-for="cFile in cognitiveFiles" class="content-box">
                 <transition name="fade" mode="out-in">
-                    <div class="list-item" :key="file.id">
-                        <div class="lead">{{ file.mediaType }}: ${{ file.fileName }}</div>
-                        <div class="change">Change:
-                            <span :class="{ 'is-submitted': file.status === 'Submitted', 'is-processed': file.status === 'Processed', is-na }">
-                                {{ file.status }}{{ file.isProcessed }}
+                    <div class="list-item" :key="cFile.id">
+                        <div class="lead">
+                            {{ cFile.fileName }}
+                        </div>
+                        <div>
+                            <i :class="{ 'fas fa-image': cFile.mediaType === 'Image', 'fas fa-file-video': cFile.mediaType === 'Video', 'fas fa-file-audio': cFile.mediaType === 'Sound', 'fas fa-file-pdf': cFile.mediaType === 'PDF' }"></i>
+                             <i>{{ cFile.mediaType }}</i>
+                        </div>
+                        <div class="change">Status:
+                            <span :class="{ 'is-submitted': cFile.isProcessed === false, 'is-processed': cFile.isProcessed === true }">
+                                {{ cFile.status }}
                             </span>
+                        </div>
+                        <h5>Cognitive Actions:</h5>
+                        <div v-for="action in cFile.cognitivePipelineActions" style="text-align: left">
+                            <table style="width: 100%">
+                                <tr>
+                                    <td style="width: 32px"><i :class="{ 'fas fa-smile-wink': action.serviceType === 'FaceDetection',
+                                        'fas fa-fingerprint': action.serviceType === 'FaceVerification',
+                                        'fas fa-smile': action.serviceType === 'FaceDetectionBasic',
+                                        'fas fa-glasses': action.serviceType === 'OCR',
+                                        'fas fa-eye': action.serviceType === 'ImageAnalysis',
+                                        'fas fa-object-group': action.serviceType === 'ObjectDetection',
+                                        'fas fa-camera-retro': action.serviceType === 'CustomVisionClassification',
+                                        'fas fa-camera': action.serviceType === 'CustomVisionObjectDetection' }">
+                                        </i>
+                                    </td>
+                                    <td>{{ action.serviceType }}</td>
+                                    <td style="width: 32px">
+                                        <span :class="{ 'is-failed': action.isSuccessful === false, 'is-successful': action.isSuccessful === true }">
+                                            <i :class="{ 'fas fa-check-circle': action.isSuccessful === true, 'fas fa-times-circle': action.isSuccessful === false }"></i>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </table>
+                                
+                            
                         </div>
                     </div>
                 </transition>

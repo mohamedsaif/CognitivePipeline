@@ -20,8 +20,7 @@ namespace CognitivePipeline.RTC.RTC
             //Connection Binding
             [SignalRConnectionInfo
             (HubName = AppConstants.SignalRHubName, 
-            ConnectionStringSetting = AppConstants.SignalRConnection,
-            UserId = "headers.x-ms-client-principal-id")]
+            ConnectionStringSetting = AppConstants.SignalRConnection)]
             SignalRConnectionInfo connectionInfo)
         {
             return connectionInfo;

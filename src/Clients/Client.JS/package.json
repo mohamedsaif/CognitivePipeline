@@ -1,0 +1,16 @@
+{
+  "name": "cognitive-pipeline-rtc-client-js",
+  "description": "Enable automatic updates in a web application using Azure Functions and SignalR: Microsoft Learn Sample Application",
+  "version": "1.0.0",
+  "main": "setup.js",
+  "scripts": {
+    "start": "lite-server --baseDir=\".\""
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@azure/cosmos": "^2.1.5"
+  },
+  "devDependencies": {
+    "lite-server": "^2.5.3"
+  }
+}

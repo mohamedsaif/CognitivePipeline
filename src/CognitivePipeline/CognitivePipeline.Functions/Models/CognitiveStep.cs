@@ -13,7 +13,7 @@ namespace CognitivePipeline.Functions.Models
     /// </summary>
     public class CognitiveStep
     {
-        [JsonProperty("ServiceType")]
+        [JsonProperty("serviceType")]
         [JsonConverter(typeof(StringEnumConverter))]
         public CognitiveServiceType ServiceType { get; set; }
 

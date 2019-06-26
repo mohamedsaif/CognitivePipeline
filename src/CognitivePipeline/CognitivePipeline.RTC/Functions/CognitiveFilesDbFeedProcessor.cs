@@ -6,6 +6,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.SignalRService;
 using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace CognitivePipeline.RTC.Functions
 {
@@ -20,7 +21,7 @@ namespace CognitivePipeline.RTC.Functions
             ConnectionStringSetting = AppConstants.CogntiveFilesDbConnection,
             LeaseCollectionName = "leases", 
             CreateLeaseCollectionIfNotExists = true)]
-            IReadOnlyList<CognitiveFile> input,
+            IReadOnlyList<Document> input,
 
             //Output
             [SignalR(HubName = AppConstants.SignalRHubName, ConnectionStringSetting = AppConstants.SignalRConnection)]IAsyncCollector<SignalRMessage> signalRMessages,
@@ -34,11 +35,11 @@ namespace CognitivePipeline.RTC.Functions
 
                 foreach(var item in input)
                 {
+                    var file = JsonConvert.DeserializeObject<CognitiveFile>(item.ToString());
                     await signalRMessages.AddAsync(new SignalRMessage
                     {
-                        Target = "UpdateNotifcation",
-                        Arguments = new[] { item },
-                        UserId = item.OwnerId
+                        Target = "UpdateNotification",
+                        Arguments = new[] { item }
                     });
                 }
             }

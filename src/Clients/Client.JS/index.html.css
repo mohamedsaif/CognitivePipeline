@@ -2,16 +2,21 @@
     padding-top: 25px;
 }
 
+.container
+{
+    padding: 10px
+}
+
 .content-box {
-    width: 200px;
+    width: 550px;
     border-radius: 3px;
     padding: 10px;
     border: solid 1px #eee;
-    text-align: center;
+    text-align: left;
     box-shadow: -1px 0px 2px 0px #eee;
     -webkit-box-shadow: -1px 0px 2px 0px #eee;
     -moz-box-shadow: -1px 0px 2px 0px #eee;
-    margin: 20px 20px 20px 0;
+    margin: 20px 20px 20px 20px;
 }
 
     .content-box:hover {
@@ -19,7 +24,7 @@
     }
 
 .lead {
-    font-size: 1.5em;
+    font-size: 1.3em;
     font-weight: 400;
 }
 
@@ -30,6 +35,16 @@
 
 .is-processed {
     color: green;
+    font-weight: bold;
+}
+
+.is-successful {
+    color: green;
+    font-weight: bold;
+}
+
+.is-failed {
+    color: red;
     font-weight: bold;
 }
 

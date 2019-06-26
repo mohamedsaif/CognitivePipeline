@@ -13,7 +13,7 @@ namespace CognitivePipeline.RTC.Models
     /// </summary>
     public class CognitiveStep
     {
-        [JsonProperty("ServiceType")]
+        [JsonProperty("serviceType")]
         [JsonConverter(typeof(StringEnumConverter))]
         public CognitiveServiceType ServiceType { get; set; }
 
